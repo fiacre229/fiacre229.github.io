@@ -1,13 +1,606 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>My Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiacre Agboto - Développeur Web Full Stack & Mobile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2980b9;
+            --accent: #1abc9c;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg: #ecf0f1;
+            --card-bg: #ffffff;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .dark-mode {
+            --primary: #3498db;
+            --secondary: #2980b9;
+            --accent: #1abc9c;
+            --text: #ecf0f1;
+            --text-light: #bdc3c7;
+            --bg: #2c3e50;
+            --card-bg: #34495e;
+            --shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .theme-toggle {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards 0.3s;
+        }
+
+        .profile-img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.4);
+            border-color: var(--accent);
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .profile-info p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .contact-item a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+
+        .contact-item i {
+            color: var(--primary);
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-item {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border-left: 3px solid var(--primary);
+        }
+
+        .skill-item:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateX(5px);
+            border-left-color: var(--accent);
+        }
+
+        .skill-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid var(--card-bg);
+        }
+
+        .timeline-date {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .timeline-content p {
+            color: var(--text-light);
+        }
+
+        .floating-bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            animation: float linear infinite;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            background: var(--accent);
+        }
+
+        .watermark {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <footer>
-        <p>&copy; <span id="currentYear"></span> My Website</p>
-    </footer>
+    <div class="floating-bubbles">
+        <!-- Les bulles seront générées par JS -->
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">Fiacre Agboto</h1>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <section class="profile">
+            <img src="toff_boss.jpg" alt="Photo de Fiacre Agboto" class="profile-img" id="profileImg">
+            <div class="profile-info">
+                <h1>Fiacre Agboto</h1>
+                <h2>Développeur Web Full Stack & Mobile</h2>
+                <p>Création d'applications web et mobiles performantes avec des technologies modernes</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/22957098656" target="_blank">+229 57098656</a>
+                    </div>
+                    <div class="contact-item">
+                        <a href="https://techdark.netlify.app/" target="_blank" rel="noopener noreferrer">
+                            <i class="fas fa-globe"></i>
+                            <span>Entreprise</span>
+                        </a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:fiacreagboto0@gmail.com">fiacreagboto0@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="competences" style="animation: fadeInUp 0.8s forwards 0.4s;">
+            <h2 class="section-title"><i class="fas fa-code"></i> Compétences</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <i class="fab fa-html5"></i>
+                    <span>HTML & CSS</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-js"></i>
+                    <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-node-js"></i>
+                    <span>Node.js</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-python"></i>
+                    <span>Python</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-server"></i>
+                    <span>API Development</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Développement Mobile</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-database"></i>
+                    <span>Bases de données</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="parcours" style="animation: fadeInUp 0.8s forwards 0.5s;">
+            <h2 class="section-title"><i class="fas fa-briefcase"></i> Parcours Professionnel</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2022 - 2024</div>
+                    <div class="timeline-content">
+                        <h3>Développeur Mobile</h3>
+                        <p>Développement d'applications mobiles cross-platform avec Capacitor. Conception d'UI/UX optimisées pour mobile et iOS.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2019 - 2022</div>
+                    <div class="timeline-content">
+                        <h3>Développeur Back-End</h3>
+                        <p>Création d'APIs robustes avec Python (Flask, Django, FastAPI). Architecture de bases de données et optimisation des performances.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2018 - 2019</div>
+                    <div class="timeline-content">
+                        <h3>Développeur Front-End</h3>
+                        <p>Conception d'interfaces utilisateur réactives et accessibles. Intégration de maquettes avec HTML, CSS et JavaScript moderne.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="technologies" style="animation: fadeInUp 0.8s forwards 0.6s;">
+            <h2 class="section-title"><i class="fas fa-cogs"></i> Technologies Maîtrisées</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <i class="fab fa-html5"></i>
+                    <span>HTML5 & CSS3</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-js"></i>
+                    <span>JavaScript (ES6+)</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-node"></i>
+                    <span>Node.js</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-mobile"></i>
+                    <span>Ionic</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fab fa-python"></i>
+                    <span>Python</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-fire"></i>
+                    <span>Flask & Django</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>FastAPI</span>
+                </div>
+                <div class="skill-item">
+                    <i class="fas fa-mobile"></i>
+                    <span>Capacitor</span>
+                </div>
+            </div>
+        </section>
+
+        <footer style="animation: fadeInUp 0.8s forwards 0.7s;">
+            <p>Disponible pour de nouveaux projets passionnants</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/fiacreagoto229" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="mailto:fiacreagboto0@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                <a href="https://wa.me/22957098656" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://techdark.netlify.app/" target="_blank" class="social-link"><i class="fas fa-link"></i></a>
+            </div>
+            <div class="watermark">
+                © <span id="currentYear">2026</span> Fiacre Agboto
+            </div>
+        </footer>
+    </div>
+
     <script>
+        // Mode clair/sombre
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        // Vérifie le mode préféré de l'utilisateur
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            body.classList.add('dark-mode');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        });
+
+        // Animation des bulles
+        const bubblesContainer = document.querySelector('.floating-bubbles');
+        const bubbleCount = 20;
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Taille aléatoire entre 10px et 100px
+            const size = Math.random() * 90 + 10;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            
+            // Position aléatoire
+            bubble.style.left = `${Math.random() * 100}%`;
+            
+            // Animation avec durée et délai aléatoires
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 5;
+            bubble.style.animation = `float ${duration}s linear infinite ${delay}s`;
+            
+            // Opacité aléatoire
+            bubble.style.opacity = Math.random() * 1 + 0.1;
+            
+            bubblesContainer.appendChild(bubble);
+        }
+
+        // Animation au défilement
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Effet de parallaxe sur l'image de profil
+        const profileImg = document.getElementById('profileImg');
+        
+        window.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 20;
+            const y = (window.innerHeight / 2 - e.pageY) / 20;
+            profileImg.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+        });
+
+        // Effet de vague sur le titre
+        const nameTitle = document.querySelector('.profile-info h1');
+        const letters = nameTitle.textContent.split('');
+        nameTitle.textContent = '';
+        
+        letters.forEach((letter, i) => {
+            const span = document.createElement('span');
+            span.textContent = letter;
+            span.style.display = 'inline-block';
+            span.style.transition = `transform 0.3s ${i * 0.05}s`;
+            nameTitle.appendChild(span);
+            
+            nameTitle.addEventListener('mouseover', () => {
+                span.style.transform = 'translateY(-5px)';
+            });
+            
+            nameTitle.addEventListener('mouseout', () => {
+                span.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Mise à jour automatique de l'année
         document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 </body>
